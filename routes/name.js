@@ -26,7 +26,7 @@ router.get("/all", (req, res) => {
 // @access  Public
 router.get("/username", (req, res) => {
     const errors = {};
-    users.find({username:req.body.username})
+    users.find({'username': req.body.username})
       .then(users => {
         if (!users) {
           errors.nousers = "There are no users";
@@ -41,15 +41,10 @@ router.get("/username", (req, res) => {
 // @desc    Delete items from one username
 // @access  Public
 router.delete("/deleteUsername", (req, res) => {
-    const errors = {};
-    users.deleteOne({username:req.body.username})
-      .then(users => {
-        if (!users) {
-          errors.nousers = "Can't delete user";
-          res.status(404).json(errors);
-        }
-        res.json(users);
-      })
+    users.deleteOne({'username': req.body.username})
+    .then(({ok, n}) => {
+        res.json({ nousers: "Deleted :)" });
+    })
       .catch(err => res.status(404).json({ nousers: "Can not delete user" }));
   });
 
@@ -58,18 +53,14 @@ router.delete("/deleteUsername", (req, res) => {
 // @access  Public
 router.post("/addUser", (req, res) =>{
     const newUser = new users({
-        "username": req.body.username,
-        "content": req.body.content
+        username: req.body.username,
+        context: req.body.content
     });
-    const errors = {};
     newUser.save()
-    .then(users => {
-        if (!users) {
-          errors.nousers = "User can not be added";
-          res.status(404).json(errors);
-        }
+    .then(()=> {
         res.json(users);
-      })
+         console.log('complete')
+    })
     .catch(err => res.status(404).json({ newUser: "User couldn't be added" }));
 });
 
@@ -77,7 +68,12 @@ router.post("/addUser", (req, res) =>{
 // @desc    Update items from one username
 // @access  Public
 router.put("/updateUser", (req, res) => {
-
+    users.replaceOne({'username': req.body.username},
+    {'username': req.body.upUsername, 'content': req.body.upContent})
+    .then(({ok, n}) => {
+        res.json({ nousers: "updated :)" });
+    })
+    .catch(err => res.status(404).json({ nousers: "User can not be updated" }));
 });
 
 
