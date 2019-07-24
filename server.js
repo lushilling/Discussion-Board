@@ -1,7 +1,19 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
-const _=require("lodash");
+
+let mongoose = require("mongoose");
+
+//connect to mongoose
+mongoose.connect(
+    'mongodb://localhost:27017/example',
+    { userNewUrlParser: true}
+).then(
+    () => { console.log("success")},
+    (err) => { /* handle errors */ }
+);
+
+
 
 //username
 const name = require("./routes/name.js");
