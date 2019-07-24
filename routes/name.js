@@ -27,16 +27,74 @@ router.get("/all", (req, res) => {
 router.get("/username", (req, res) => {
     const errors = {};
     users.find({username:req.body.username})
-      .then(items => {
-        if (!items) {
-          errors.noItems = "There are no items";
+      .then(users => {
+        if (!users) {
+          errors.nousers = "There are no users";
           res.status(404).json(errors);
         }
-        res.json(items);
+        res.json(users);
       })
-      .catch(err => res.status(404).json({ noItems: "There are no items" }));
+      .catch(err => res.status(404).json({ nousers: "There are no users" }));
   });
   
+// @route   DELETE name/deleteUsername
+// @desc    Delete items from one username
+// @access  Public
+router.delete("/deleteUsername", (req, res) => {
+    const errors = {};
+    users.deleteOne({username:req.body.username})
+      .then(users => {
+        if (!users) {
+          errors.nousers = "There are no users";
+          res.status(404).json(errors);
+        }
+        res.json(users);
+      })
+      .catch(err => res.status(404).json({ nousers: "There are no users" }));
+  });
+
+// @route   POST name/addUser
+// @desc    Add user
+// @access  Public
+router.post("/addUser", (req, res) =>{
+    const newUser = new users({
+        "username": req.body.username,
+        "content": req.body.content
+    });
+    const erros = {};
+    // Save returns a promise
+    newUser.save()
+    .then(() => console.log('complete'));
+    .catch(err => res.status(404).json({ newUser: "User couldn't be added" }));
+});
+
+// @route   PUT name/updateUsername
+// @desc    Update items from one username
+// @access  Public
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 //@route Post name/array
 //@desc Get everything in the array
