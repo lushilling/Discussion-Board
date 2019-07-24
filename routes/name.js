@@ -45,12 +45,12 @@ router.delete("/deleteUsername", (req, res) => {
     users.deleteOne({username:req.body.username})
       .then(users => {
         if (!users) {
-          errors.nousers = "There are no users";
+          errors.nousers = "Can't delete user";
           res.status(404).json(errors);
         }
         res.json(users);
       })
-      .catch(err => res.status(404).json({ nousers: "There are no users" }));
+      .catch(err => res.status(404).json({ nousers: "Can not delete user" }));
   });
 
 // @route   POST name/addUser
@@ -61,17 +61,24 @@ router.post("/addUser", (req, res) =>{
         "username": req.body.username,
         "content": req.body.content
     });
-    const erros = {};
-    // Save returns a promise
+    const errors = {};
     newUser.save()
-    .then(() => console.log('complete'));
+    .then(users => {
+        if (!users) {
+          errors.nousers = "User can not be added";
+          res.status(404).json(errors);
+        }
+        res.json(users);
+      })
     .catch(err => res.status(404).json({ newUser: "User couldn't be added" }));
 });
 
 // @route   PUT name/updateUsername
 // @desc    Update items from one username
 // @access  Public
+router.put("/updateUser", (req, res) => {
 
+});
 
 
 
