@@ -7,7 +7,12 @@ let UserSchema = new Schema({
         required: true,
         minlength: 3
     },
-    content: String
+    content: String,
+    email: {
+        type: String,
+        required: true,
+        length
+    }
 });
 
 let User = mongoose.model('users', UserSchema);
