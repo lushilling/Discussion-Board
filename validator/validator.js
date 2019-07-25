@@ -17,10 +17,9 @@ module.exports = function validateLoginInput(user) {
         errors.username = "Username is invalid";
     }
 
-    // //content validation rules
-    // if (!Validator.isContent(user.content)) {
-    //     errors.content = "Content is invalid";
-    // }
+    if (!Validator.isAlphanumeric(user.username)){
+        errors.username = "Username must contain letters and numbers";
+    }
 
     return {
         errors,
