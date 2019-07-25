@@ -11,7 +11,8 @@ let UserSchema = new Schema({
     email: {
         type: String,
         required: true,
-        length
+        minlength: 3,
+        maxlength: 320
     }
 });
 

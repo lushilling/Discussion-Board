@@ -3,6 +3,8 @@ const router = express.Router();
 const _=require("lodash");
 const User = require("../models/schema");
 const userValidation = require("../validator/validator");
+const bcrypt = require("bcryptjs");
+
 
 // @route   GET item/test
 // @desc    Tests route
@@ -66,7 +68,8 @@ router.post("/addUser", (req, res) =>{
     };
     const user = new User({
         username: req.body.username,
-        content: req.body.content
+        content: req.body.content,
+        email: req.body.email
     });
     user.save()
     .then(()=> {

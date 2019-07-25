@@ -21,6 +21,15 @@ module.exports = function validateLoginInput(user) {
         errors.username = "Username must contain letters and numbers";
     }
 
+     //email validation rules
+     if (Validator.isEmpty(user.email)) {
+        errors.email = "email field is required";
+    }
+
+    if (!Validator.isLength(user.email, { min: 3, max: 320 }))  {
+        errors.email = "email is invalid";
+    }
+
     return {
         errors,
         isValid: isEmpty(errors)
