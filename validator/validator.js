@@ -13,14 +13,14 @@ module.exports = function validateLoginInput(user) {
         errors.username = "Username field is required";
     }
 
-    if (!Validator.isUsername(user.username)) {
+    if (!Validator.isLength(user.username, { min: 3, max: 20 }))  {
         errors.username = "Username is invalid";
     }
 
-    //content validation rules
-    if (!Validator.isContent(user.content)) {
-        errors.content = "Content is invalid";
-    }
+    // //content validation rules
+    // if (!Validator.isContent(user.content)) {
+    //     errors.content = "Content is invalid";
+    // }
 
     return {
         errors,

@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const _=require("lodash");
 const User = require("../models/schema");
+const userValidation = require("../validator/validator");
 
 // @route   GET item/test
 // @desc    Tests route
@@ -59,6 +60,10 @@ router.delete("/deleteUsername", (req, res) => {
 // @desc    Add user
 // @access  Public
 router.post("/addUser", (req, res) =>{
+    const {errors, isValid} = userValidation(req.body);
+    if (!isValid) {
+        return res.status(400).json(errors);
+    };
     const user = new User({
         username: req.body.username,
         content: req.body.content
