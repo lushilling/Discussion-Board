@@ -1,8 +1,10 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
+const mongoose = require("mongoose");
 
-let mongoose = require("mongoose");
+//username
+const name = require("./routes/name");
 
 //connect to mongoose
 mongoose.connect(
@@ -12,9 +14,6 @@ mongoose.connect(
     () => { console.log("success")},
     (err) => { /* handle errors */ }
 );
-
-//username
-const name = require("./routes/name.js");
 
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());

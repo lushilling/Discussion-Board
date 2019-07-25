@@ -3,8 +3,6 @@ const router = express.Router();
 const _=require("lodash");
 const user = require("../models/schema");
 
-let myArray = [];
-
 // @route   GET item/test
 // @desc    Tests route
 // @access  Public
@@ -19,7 +17,7 @@ router.get("/test", (req, res) => {
 //@access Public
 router.get("/all", (req, res) => {
     const errors = {};
-    users.find()
+    user.find()
     .then(users => {
         if (!users){
             errors.onUsers = "There are no users";
@@ -35,39 +33,39 @@ router.get("/all", (req, res) => {
 // @access  Public
 router.get("/username", (req, res) => {
     const errors = {};
-    users.find({'username': req.body.username})
-      .then(users => {
-        if (!users) {
-          errors.nousers = "There are no users";
+    user.find({'username': req.body.username})
+      .then(user => {
+        if (!user) {
+          errors.nouser = "There are no users";
           res.status(404).json(errors);
         }
-        res.json(users);
+        res.json(user);
       })
-      .catch(err => res.status(404).json({ nousers: "There are no users" }));
+      .catch(err => res.status(404).json({ nouser: "There are no users" }));
   });
   
 // @route   DELETE name/deleteUsername
 // @desc    Delete items from one username
 // @access  Public
 router.delete("/deleteUsername", (req, res) => {
-    users.deleteOne({'username': req.body.username})
+    user.deleteOne({'username': req.body.username})
     .then(({ok, n}) => {
-        res.json({ nousers: "Deleted :)" });
+        res.json({ nouser: "Deleted :)" });
     })
-      .catch(err => res.status(404).json({ nousers: "Can not delete user" }));
+      .catch(err => res.status(404).json({ nouser: "Can not delete user" }));
   });
 
 // @route   POST name/addUser
 // @desc    Add user
 // @access  Public
 router.post("/addUser", (req, res) =>{
-    const newUser = new users({
+    const newUser = new user({
         username: req.body.username,
-        context: req.body.content
+        content: req.body.content
     });
     newUser.save()
     .then(()=> {
-        res.json(users);
+        res.json(newUser);
          console.log('complete')
     })
     .catch(err => res.status(404).json({ newUser: "User couldn't be added" }));
@@ -77,12 +75,12 @@ router.post("/addUser", (req, res) =>{
 // @desc    Update items from one username
 // @access  Public
 router.put("/updateUser", (req, res) => {
-    users.replaceOne({'username': req.body.username},
+    user.replaceOne({'username': req.body.username},
     {'username': req.body.upUsername, 'content': req.body.upContent})
     .then(({ok, n}) => {
-        res.json({ nousers: "updated :)" });
+        res.json({ nouser: "updated :)" });
     })
-    .catch(err => res.status(404).json({ nousers: "User can not be updated" }));
+    .catch(err => res.status(404).json({ nouser: "User can not be updated" }));
 });
 
 
@@ -106,7 +104,7 @@ router.put("/updateUser", (req, res) => {
 
 
 
-
+let myArray = [];
 
 //@route Post name/array
 //@desc Get everything in the array
