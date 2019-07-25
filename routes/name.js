@@ -6,7 +6,7 @@ const userValidation = require("../validator/validator");
 const bcrypt = require("bcryptjs");
 
 
-// @route   GET item/test
+// @route   GET name/test
 // @desc    Tests route
 // @access  Public
 router.get("/test", (req, res) => {
@@ -50,7 +50,7 @@ router.get("/username", (req, res) => {
 // @route   DELETE name/deleteUsername
 // @desc    Delete items from one username
 // @access  Public
-router.delete("/deleteUsername", (req, res) => {
+router.delete("/deleteUser", (req, res) => {
     User.deleteOne({'username': req.body.username})
     .then(({ok, n}) => {
         res.json({ noUsers: "Deleted :)" });
@@ -71,12 +71,17 @@ router.post("/addUser", (req, res) =>{
         content: req.body.content,
         email: req.body.email
     });
-    user.save()
-    .then(()=> {
-        res.json(user);
-         console.log('complete')
-    })
-    .catch(err => res.status(404).json({ noUsers: "User couldn't be added" }));
+    bcrypt.genSalt(10, (err, salt) => {
+        bcrypt.hash(user.email, salt, (err, hash) =>{
+            if (err) throw err;
+            user.email = hash;
+            user.save()
+            .then(() => {
+                res.json(user)
+            })
+            .catch(err => res.status(404).json(err));
+        });
+    });
 });
 
 // @route   PUT name/updateUsername
