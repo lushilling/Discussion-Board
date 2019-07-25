@@ -7,9 +7,9 @@ let userSchema = new Schema({
         required: true,
         minlength: 3
     },
-    context: String
+    content: String
 });
 
-let users = mongoose.model('users', userSchema);
+let users = mongoose.model('user', userSchema);
 
 module.exports = users;

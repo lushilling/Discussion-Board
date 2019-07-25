@@ -1,9 +1,18 @@
 const express = require("express");
 const router = express.Router();
 const _=require("lodash");
-const users = require("../schema");
+const user = require("../models/schema");
 
 let myArray = [];
+
+// @route   GET item/test
+// @desc    Tests route
+// @access  Public
+router.get("/test", (req, res) => {
+    res.json({
+      message: "Username"
+    });
+  });
 
 //@route GET name/all
 //@desc Get all usernames
