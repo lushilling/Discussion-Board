@@ -20,7 +20,7 @@ router.get("/test", (req, res) => {
 //@access Public
 router.get("/all", (req, res) => {
     const errors = {};
-    User.find()
+    User.find({}, '-email')
     .then(users => {
         if (!users){
             errors.onUsers = "There are no users";
@@ -36,7 +36,7 @@ router.get("/all", (req, res) => {
 // @access  Public
 router.get("/username", (req, res) => {
     const errors = {};
-    User.find({'username': req.body.username})
+    User.find({'username': req.body.username}, '-email')
       .then(users => {
         if (!users) {
           errors.noUsers = "There are no users";
@@ -57,6 +57,32 @@ router.delete("/deleteUser", (req, res) => {
     })
       .catch(err => res.status(404).json({ noUsers: "Can not delete user" }));
   });
+
+//   let errors = {};
+
+//   const email = req.body.email;
+//   const id = req.body._id;
+
+//   Item.findById(id).then(item => {
+
+//     bcrypt.compare(email, item.email).then(isMatch => {
+//       if (isMatch) {
+
+//         item.remove()
+//           .then(() => {
+//             res.json({ success: true });
+//           })
+//           .catch(err =>
+//             res.status(404).json({ itemnotfound: "No item found" })
+//           );
+
+//       } else {
+//         errors.email = "Email Incorrect";
+//         return res.status(400).json(errors);
+//       }
+//     });
+
+//   }).catch
 
 // @route   POST name/addUser
 // @desc    Add user
