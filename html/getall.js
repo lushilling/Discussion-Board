@@ -70,15 +70,19 @@ function getItems() {
                 removePostbtn.type = "button";
                 removePostbtn.className = "btn btn-primary";
                 removePostbtn.value = "Remove Post";
-                // let ItemID = data[i]._id;
+                let ItemID = data[i]._id;
 
-                // removeFilmbtn.onclick = function () {
-                //     removeFilm(ID, ItemID);
-                // };
-                // myRemovePost.appendChild(removePostbtn);
+                removePostbtn.onclick = function () {
+                    removePost(ID, ItemID);
+                };
+                myRemovePost.appendChild(removePostbtn);
 
             }
         })
         .catch((error) => console.log(error.message));
     return false;
+}
+
+function removePost(ID, ItemID){
+    
 }
