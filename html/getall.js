@@ -49,8 +49,8 @@ function getItems() {
             let tableHeadingRemovePost = document.createElement('th');
             tableHeadingRemovePost.innerHTML = "Delete";
             container.appendChild(tableHeadingRemovePost);
-
-            for (let i = 0; i < data.length; i++) {
+let p = data.length -1;
+            for (let i = p; i > -1; i--) {
                 let myRow = document.createElement('tr');
 
                 myRow.id = "row" + i;
