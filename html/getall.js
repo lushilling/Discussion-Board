@@ -46,6 +46,10 @@ function getItems() {
             tableHeadingTitle2.innerHTML = "Content";
             container.appendChild(tableHeadingTitle2);
 
+            let tableHeadingTitle3 = document.createElement('th');
+            tableHeadingTitle3.innerHTML = "Email";
+            container.appendChild(tableHeadingTitle3);
+
             let tableHeadingRemovePost = document.createElement('th');
             tableHeadingRemovePost.innerHTML = "Delete";
             container.appendChild(tableHeadingRemovePost);
@@ -64,16 +68,23 @@ function getItems() {
                 myContent.innerHTML = String(data[i].content);
                 myRow.appendChild(myContent);
 
+                let myEmail = document.createElement('td');
+                myEmail.innerHTML = String(data[i].email);
+                myRow.appendChild(myEmail);
+                let email = data[i].email;
+                console.log(data[i].email)
+
                 let myRemovePost = document.createElement('td');
                 myRow.appendChild(myRemovePost);
                 let removePostbtn = document.createElement('input');
                 removePostbtn.type = "button";
                 removePostbtn.className = "btn btn-primary";
                 removePostbtn.value = "Remove Post";
-                let ItemID = data[i]._id;
+                let _id = data[i]._id;
+                console.log(data[i]._id)
 
                 removePostbtn.onclick = function () {
-                    removePost(ID, ItemID);
+                    removePost(_id, email);
                 };
                 myRemovePost.appendChild(removePostbtn);
 
@@ -83,6 +94,19 @@ function getItems() {
     return false;
 }
 
-function removePost(ID, ItemID){
-    
+function removePost(ID, Email){
+    let newBody = {
+        _id: ID,
+        email: Email
+    };
+    console.log(newBody);
+    makeRequest('DELETE', 'http://localhost:5000/item/deleteItem/', newBody)
+        .then(() => {
+            console.log("you have deleted");
+    })
+    .catch((error) => {
+        console.log(error.message);
+    });
+    return false;
+
 }
