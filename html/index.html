@@ -11,6 +11,26 @@
         <li><a href="register.html">Register</a></li>
         <li><a href="login.html">Login</a></li>
     </ul>
+
+
+    <div class="formDiv">
+        <h2>Sign in with user id</h2>
+        <form onsubmit="return getAUser()">
+            <label for="anAcc" id="anAccLable">Enter id of the user you want to search for: </label>
+            <input type="text" id="anAcc" class="form-control" name="anAcc" required>
+            <br>
+            <input type="submit" id="signIn" class="btn btn-primary" value="Sign in">
+            <br>
+            <p id="systemResponse">
+            </p>
+        </form>
+    </div>
+
+    <div id="random">
+        
+    </div>
+
+
 </body>
 
 </html>
