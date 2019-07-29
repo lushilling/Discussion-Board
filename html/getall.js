@@ -30,34 +30,38 @@ function getItems() {
             tableHeading.id = "tableHeading";
             tableHeading.innerHTML = "Posts";
             containerDiv.appendChild(tableHeading);
-            if (document.contains(document.getElementById("table1"))) {
-                containerDiv.removeChild(document.getElementById("table1"));
-                containerDiv.removeChild(document.getElementById("tableHeading"));
-            }
+            // if (document.contains(document.getElementById("table1"))) {
+            //     containerDiv.removeChild(document.getElementById("table1"));
+            //     containerDiv.removeChild(document.getElementById("tableHeading"));
+            // }
             let container = document.createElement('table');
             container.id = "table1";
             containerDiv.appendChild(container);
+
             let tableHeadingTitle = document.createElement('th');
             tableHeadingTitle.innerHTML = "Username";
             container.appendChild(tableHeadingTitle);
+
             let tableHeadingTitle2 = document.createElement('th');
             tableHeadingTitle2.innerHTML = "Content";
             container.appendChild(tableHeadingTitle2);
+
             let tableHeadingRemovePost = document.createElement('th');
             tableHeadingRemovePost.innerHTML = "Delete";
             container.appendChild(tableHeadingRemovePost);
-            
 
-            for (let i = 0; i < data.Item.length; i++) {
+            for (let i = 0; i < data.length; i++) {
                 let myRow = document.createElement('tr');
+
                 myRow.id = "row" + i;
                 container.appendChild(myRow);
 
                 let myUsername = document.createElement('td');
-                myUsername.innerHTML = String(data.Item[i].username);
+                myUsername.innerHTML = String(data[i].username);
                 myRow.appendChild(myUsername);
+
                 let myContent = document.createElement('td');
-                myContent.innerHTML = String(data.Item[i].content);
+                myContent.innerHTML = String(data[i].content);
                 myRow.appendChild(myContent);
 
                 let myRemovePost = document.createElement('td');
@@ -65,8 +69,8 @@ function getItems() {
                 let removePostbtn = document.createElement('input');
                 removePostbtn.type = "button";
                 removePostbtn.className = "btn btn-primary";
-                removePostbtn.value = "Remove Film";
-                let ItemID = data.Item[i]._id;
+                removePostbtn.value = "Remove Post";
+                // let ItemID = data[i]._id;
 
                 // removeFilmbtn.onclick = function () {
                 //     removeFilm(ID, ItemID);
