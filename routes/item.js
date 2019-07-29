@@ -105,10 +105,12 @@ router.put("/updateItem", (req, res) => {
         return res.status(400).json(errors);
     }
     let errorlog = {};
-    const email = req.body.email;
+    const newItem = new Item({
+        email: req.body.email,
+        username: req.body.username,
+        content: req.body.content
+    })
     const id = req.body._id;
-    const username = req.body.username;
-    const content = req.body.content;
     Item.findById(id).then(item => {
         bcrypt.compare(email, item.email).then(isMatch => {
             if (isMatch) {
