@@ -14,20 +14,27 @@
 
 
     <div class="formDiv">
-        <h2>Sign in with user id</h2>
-        <form onsubmit="return getAUser()">
-            <label for="anAcc" id="anAccLable">Enter id of the user you want to search for: </label>
-            <input type="text" id="anAcc" class="form-control" name="anAcc" required>
-            <br>
-            <input type="submit" id="signIn" class="btn btn-primary" value="Sign in">
-            <br>
-            <p id="systemResponse">
-            </p>
-        </form>
-    </div>
+            <h2>Create an Account</h2>
+            <form onsubmit="return createAccount()">
+    
+                <br><br>
+                <label for="accUsername" id="accUsernameLabel">Username: </label>
+                <input type="text" id="accUsername" class="form-control" name="accUsername" required>
+                <br>
+                <label for="accEmail" id="accEmailLable">Email: </label>
+                <input type="email" id="accEmail" class="form-control" name="accEmail" required>
+                <br>
+                <label for="accContent" id="accContentLable">Email: </label>
+                <input type="content" id="accContent" class="form-control" name="accContent" required>
+                <br>
+                <input type="submit" class="btn btn-primary" value="Sign up">
+                <p id="systemResponse2">
+                </p>
+            </form>
+        </div>
 
     <div id="random">
-        
+
     </div>
 
 
