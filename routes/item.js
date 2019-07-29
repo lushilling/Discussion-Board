@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const _=require("lodash");
-const User = require("../models/item");
-const userValidation = require("../validation/item");
+const _ = require("lodash");
+const Item = require("../models/item");
+const itemValidation = require("../validation/item");
 const bcrypt = require("bcryptjs");
 
 
@@ -11,24 +11,24 @@ const bcrypt = require("bcryptjs");
 // @access  Public
 router.get("/test", (req, res) => {
     res.json({
-      message: "User"
+        message: "User"
     });
-  });
+});
 
 //@route GET item/all
-//@desc Get all usernames
+//@desc Get all items
 //@access Public
 router.get("/all", (req, res) => {
     const errors = {};
-    User.find({}, '-email')
-    .then(users => {
-        if (!users){
-            errors.onUsers = "There are no users";
-            res.status((404).json(errors))
-        }
-        res.json(users);
-    })
-    .catch(err => res.status(404).json({noUsers: "There are no users"}));
+    Item.find({}, '-email')
+        .then(items => {
+            if (!items) {
+                errors.noItems = "There are no items";
+                res.status((404).json(errors))
+            }
+            res.json(items);
+        })
+        .catch(err => res.status(404).json({ noItems: "There are no items" }));
 });
 
 // @route   GET item/username
@@ -36,154 +36,94 @@ router.get("/all", (req, res) => {
 // @access  Public
 router.get("/username", (req, res) => {
     const errors = {};
-    User.find({'username': req.body.username}, '-email')
-      .then(users => {
-        if (!users) {
-          errors.noUsers = "There are no users";
-          res.status(404).json(errors);
-        }
-        res.json(users);
-      })
-      .catch(err => res.status(404).json({ noUsers: "There are no users" }));
-  });
-  
-// @route   DELETE item/deleteUsername
-// @desc    Delete items from one username
+    Item.find({ username: req.body.username })
+        .then(items => {
+            if (!items) {
+                errors.noItems = "There are no items";
+                res.status(404).json(errors);
+            }
+            res.json(items);
+        })
+        .catch(err => res.status(404).json({ noItems: "There are no items" }));
+});
+
+// @route   DELETE item/deleteItem
+// @desc    Delete first Item
 // @access  Public
-router.delete("/deleteUser", (req, res) => {
-    User.deleteOne({'username': req.body.username})
-    .then(({ok, n}) => {
-        res.json({ noUsers: "Deleted :)" });
-    })
-      .catch(err => res.status(404).json({ noUsers: "Can not delete user" }));
-  });
+router.delete("/deleteItem", (req, res) => {
+    let errors = {};
+    const email = req.body.email;
+    const id = req.body._id;
+    Item.findById(id).then(item => {
+        bcrypt.compare(email, item.email).then(isMatch => {
+            if (isMatch) {
+                item
+                    .remove().then(() => {
+                        res.json({ success: true });
+                    })
+                    .catch(err =>
+                        res.status(404).json({ itemnotfound: "No item found" })
+                    );
 
-//   let errors = {};
+            } else {
+                errors.email = "Email Incorrect";
+                return res.status(400).json(errors);
+            }
+        });
+    }).catch(err => res.status(404).json({ noItem: "There is no item with this ID" }));
+});
 
-//   const email = req.body.email;
-//   const id = req.body._id;
-
-//   Item.findById(id).then(item => {
-
-//     bcrypt.compare(email, item.email).then(isMatch => {
-//       if (isMatch) {
-
-//         item.remove()
-//           .then(() => {
-//             res.json({ success: true });
-//           })
-//           .catch(err =>
-//             res.status(404).json({ itemnotfound: "No item found" })
-//           );
-
-//       } else {
-//         errors.email = "Email Incorrect";
-//         return res.status(400).json(errors);
-//       }
-//     });
-
-//   }).catch
-
-// @route   POST item/addUser
+// @route   POST item/createItem
 // @desc    Add user
 // @access  Public
-router.post("/addUser", (req, res) =>{
-    const {errors, isValid} = userValidation(req.body);
+router.post("/createItem", (req, res) => {
+    const { errors, isValid } = itemValidation(req.body);
     if (!isValid) {
         return res.status(400).json(errors);
     };
-    const user = new User({
+    const newItem = new Item({
         username: req.body.username,
         content: req.body.content,
         email: req.body.email
     });
     bcrypt.genSalt(10, (err, salt) => {
-        bcrypt.hash(user.email, salt, (err, hash) =>{
+        bcrypt.hash(newItem.email, salt, (err, hash) => {
             if (err) throw err;
-            user.email = hash;
-            user.save()
-            .then(() => {
-                res.json(user)
-            })
-            .catch(err => res.status(404).json(err));
+            newItem.email = hash;
+            newItem.save().then(item => res.json(item))
+                .catch(err => console.log(err));
         });
     });
 });
 
-// @route   PUT item/updateUsername
+// @route   PUT item/updateItem
 // @desc    Update items from one username
 // @access  Public
-router.put("/updateUser", (req, res) => {
-    User.replaceOne({'username': req.body.username},
-    {'username': req.body.username, 'content': req.body.content})
-    .then(({ok, n}) => {
-        res.json({ noUsers: "updated :)" });
-    })
-    .catch(err => res.status(404).json({ noUsers: "User can not be updated" }));
-});
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-let myArray = [];
-
-//@route Post name/array
-//@desc Get everything in the array
-//@access Public
-router.post("/array", (req, res) => {
-    let newItem = {
-        "username": req.body.username,
-        "content": req.body.content
+router.put("/updateItem", (req, res) => {
+    const { errors, isValid } = itemValidation(req.body);
+    if (!isValid) {
+        return res.status(400).json(errors);
     }
-    myArray.push(newItem);
-    res.send(myArray);
-});
-
-//@route GET name/getNames
-//@desc Get all users
-//@access Public
-router.get("/getNames", (req, res) => { 
-    res.send(myArray);
-});
-
-//@route GET name/update
-//@desc Update a user by index
-//@access Public
-router.put("/update", (req,res) =>{
-    let newItem = {
-        "username": req.body.username,
-        "content": req.body.content
-    }
-    let index = req.body.index;
-    _.set(myArray, index, newItem);
-    res.send(myArray)
-});
-
-//@route GET name/delete
-//@desc delete a user by index number
-//@access Public
-router.delete("/delete", (req,res) =>{
-    let index = req.body.index;
-    _.pullAt(myArray, index);
-    res.send(myArray)
+    let errorlog = {};
+    const email = req.body.email;
+    const id = req.body._id;
+    const username = req.body.username;
+    const content = req.body.content;
+    Item.findById(id).then(item => {
+        bcrypt.compare(email, item.email).then(isMatch => {
+            if (isMatch) {
+                Item.replaceOne({ '_id': id },
+                    { 'username': req.body.username, 'content': req.body.content, 'email': item.email })
+                    .then(({ ok, n }) => {
+                        res.json({ noItems: "updated :)" });
+                    })
+                    .catch(err => res.status(404).json(err));
+            } else {
+                errorlog.email = "Email Incorrect";
+                return res.status(400).json(errorlog);
+            }
+        });
+    }).catch(err => res.status(404).json({ noItem: "There is no item with this ID" }));
 });
 
 module.exports = router;

@@ -1,7 +1,7 @@
 const mongoose = require("mongoose")
 let Schema = mongoose.Schema;
 
-let ItemSchema = new Schema({
+let itemSchema = new Schema({
     username: {
         type: String,
         required: true,
@@ -16,6 +16,6 @@ let ItemSchema = new Schema({
     content: String
 });
 
-let Item = mongoose.model('items', ItemSchema);
+let Item = mongoose.model('Item', itemSchema);
 
 module.exports = Item;
