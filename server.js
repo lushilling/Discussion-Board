@@ -3,8 +3,7 @@ const bodyParser = require("body-parser");
 const app = express();
 const mongoose = require("mongoose");
 
-//username
-const name = require("./routes/name");
+const item = require("./routes/item");
 
 //connect to mongoose
 mongoose.connect(
@@ -12,13 +11,13 @@ mongoose.connect(
     { userNewUrlParser: true}
 ).then(
     () => { console.log("success")},
-    (err) => { /* handle errors */ }
+    (err) => { console.log(err) }
 );
 
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
 
-app.use("/name", name);
+app.use("/item", item);
 
 const port = process.env.PORT || 5000;
 

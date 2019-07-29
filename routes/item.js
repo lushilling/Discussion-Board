@@ -1,12 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const _=require("lodash");
-const User = require("../models/schema");
-const userValidation = require("../validator/validator");
+const User = require("../models/item");
+const userValidation = require("../validation/item");
 const bcrypt = require("bcryptjs");
 
 
-// @route   GET name/test
+// @route   GET item/test
 // @desc    Tests route
 // @access  Public
 router.get("/test", (req, res) => {
@@ -15,7 +15,7 @@ router.get("/test", (req, res) => {
     });
   });
 
-//@route GET name/all
+//@route GET item/all
 //@desc Get all usernames
 //@access Public
 router.get("/all", (req, res) => {
@@ -31,7 +31,7 @@ router.get("/all", (req, res) => {
     .catch(err => res.status(404).json({noUsers: "There are no users"}));
 });
 
-// @route   GET name/username
+// @route   GET item/username
 // @desc    Get all items from one username
 // @access  Public
 router.get("/username", (req, res) => {
@@ -47,7 +47,7 @@ router.get("/username", (req, res) => {
       .catch(err => res.status(404).json({ noUsers: "There are no users" }));
   });
   
-// @route   DELETE name/deleteUsername
+// @route   DELETE item/deleteUsername
 // @desc    Delete items from one username
 // @access  Public
 router.delete("/deleteUser", (req, res) => {
@@ -84,7 +84,7 @@ router.delete("/deleteUser", (req, res) => {
 
 //   }).catch
 
-// @route   POST name/addUser
+// @route   POST item/addUser
 // @desc    Add user
 // @access  Public
 router.post("/addUser", (req, res) =>{
@@ -110,7 +110,7 @@ router.post("/addUser", (req, res) =>{
     });
 });
 
-// @route   PUT name/updateUsername
+// @route   PUT item/updateUsername
 // @desc    Update items from one username
 // @access  Public
 router.put("/updateUser", (req, res) => {
