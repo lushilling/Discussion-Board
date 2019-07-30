@@ -14,8 +14,8 @@
 
 
     <div class="formDiv">
-            <h2>Create an Account</h2>
-            <form onsubmit="return createAccount()">
+            <h2>Create an Post</h2>
+            <form onsubmit="createItem()">
     
                 <br><br>
                 <label for="accUsername" id="accUsernameLabel">Username: </label>
@@ -27,9 +27,10 @@
                 <label for="accContent" id="accContentLable">content: </label>
                 <input type="content" id="accContent" class="form-control" name="accContent" required>
                 <br>
-                <input type="submit" class="btn btn-primary" value="Sign up">
+    
+                 <input type="submit" class="btn btn-primary" value="Sign up">
                 <p id="systemResponse2">
-                </p>
+                </p> 
             </form>
         </div>
 
@@ -38,6 +39,8 @@
     </div>
 
 <script src='getall.js'></script>
+<script src='Create.js'></script>
+
 </body>
 
 </html>
