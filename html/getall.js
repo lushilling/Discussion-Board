@@ -14,11 +14,12 @@ function makeRequest(method, url, body) {
             };
 
             req.open(method, url);
+
+            req.setRequestHeader("Content-Type", "application/json");
             req.send(JSON.stringify(body));
         }
     );
 }
-
 
 function getItems() {
 
@@ -74,19 +75,17 @@ function getItems() {
                 let email = data[i].email;
                 console.log(data[i].email)
 
-                let myRemovePost = document.createElement('td');
-                myRow.appendChild(myRemovePost);
-                let removePostbtn = document.createElement('input');
-                removePostbtn.type = "button";
-                removePostbtn.className = "btn btn-primary";
-                removePostbtn.value = "Remove Post";
-                let _id = data[i]._id;
-                console.log(data[i]._id)
+                let deleteData = document.createElement('td');
+                let deleteButton = document.createElement('button');
 
-                removePostbtn.onclick = function () {
-                    removePost(_id, email);
-                };
-                myRemovePost.appendChild(removePostbtn);
+                deleteButton.id = data[i]._id;
+                console.log(data[i]._id)
+                deleteButton.innerText = "Delete Post";
+                deleteButton.onclick = deleteButtonHandler;
+
+                deleteData.appendChild(deleteButton);
+
+                myRow.appendChild(deleteData);
 
             }
         })
@@ -94,19 +93,29 @@ function getItems() {
     return false;
 }
 
-function removePost(ID, Email){
-    let newBody = {
-        _id: ID,
-        email: Email
-    };
-    console.log(newBody);
-    makeRequest('DELETE', 'http://localhost:5000/item/deleteItem/', newBody)
-        .then(() => {
-            console.log("you have deleted");
-    })
-    .catch((error) => {
-        console.log(error.message);
-    });
-    return false;
 
+const deleteButtonHandler = () => {
+    let id = Number(document.getElementById("accUsername").value);
+    console.log(id);
+    multi("DELETE", "http://localhost:5000/item/deleteItem" + event.target.id).then(val => {
+        location.href = "teachers.html";
+        getAll();
+    }).catch(function(error) { console.log(error.message) });
 }
+
+// function removePost(ID, Email) {
+//     let newBody = {
+//         _id: ID,
+//         email: Email
+//     };
+//     console.log(newBody);
+//     makeRequest('DELETE', 'http://localhost:5000/item/deleteItem/', newBody)
+//         .then(() => {
+//             console.log("you have deleted");
+//         })
+//         .catch((error) => {
+//             console.log(error.message);
+//         });
+//     return false;
+
+// }

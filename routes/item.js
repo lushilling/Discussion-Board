@@ -50,27 +50,40 @@ router.get("/username", (req, res) => {
 // @route   DELETE item/deleteItem
 // @desc    Delete first Item
 // @access  Public
-router.delete("/deleteItem", (req, res) => {
-    let errors = {};
-    const email = req.body.email;
-    const id = req.body._id;
-    Item.findById(id).then(item => {
-        bcrypt.compare(email, item.email).then(isMatch => {
-            if (isMatch) {
-                item
-                    .remove().then(() => {
-                        res.json({ success: true });
-                    })
-                    .catch(err =>
-                        res.status(404).json({ itemnotfound: "No item found" })
-                    );
+// router.delete("/deleteItem", (req, res) => {
+//     let errors = {};
+//     const email = req.body.email;
+//     const id = req.body._id;
+//     Item.findById(id).then(item => {
+//         bcrypt.compare(email, item.email).then(isMatch => {
+//             if (isMatch) {
+//                 item
+//                     .remove().then(() => {
+//                         res.json({ success: true });
+//                     })
+//                     .catch(err =>
+//                         res.status(404).json({ itemnotfound: "No item found" })
+//                     );
 
-            } else {
-                errors.email = "Email Incorrect";
-                return res.status(400).json(errors);
-            }
-        });
-    }).catch(err => res.status(404).json({ noItem: "There is no item with this ID" }));
+//             } else {
+//                 errors.email = "Email Incorrect";
+//                 return res.status(400).json(errors);
+//             }
+//         });
+//     }).catch(err => res.status(404).json({ noItem: "There is no item with this ID" }));
+// });
+
+router.delete("/deleteItem/:id", (req, res) => {
+    let errors = {};
+    let id = req.params._id;
+    item
+    .remove().then(() => {
+        res.json({ success: true });
+    })
+    .catch(err =>
+        res.status(404).json({ itemnotfound: "No item found" })
+    );
+
 });
 
 // @route   POST item/createItem
